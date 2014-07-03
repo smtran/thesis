@@ -96,8 +96,44 @@ fslmaths ${outdirAtlasExtraction}/LH-Precu-mask-orig.nii.gz \
 #40 R Supramarginal Gyrus, posterior division
 #19 L Superior Temporal Gyrus, posterior division
 #20 R Superior Temporal Gyrus, posterior division
+
+
+###Regions omitted
 #25 L Middle Temporal Gyrus, temporooccipital part
-#26 R Middle Temporal Gyrus, temporooccipital part
+#26 R Middle Temporal egions from LATERALIZED HO Cortical Atlas
+#41 L Angular Gyrus
+#42 R Angular Gyrus
+#39 L Supramarginal Gyrus, posterior division
+#40 R Supramarginal Gyrus, posterior division
+#19 L Superior Temporal Gyrus, posterior division
+#20 R Superior Temporal Gyrus, posterior division
+
+#	#left middle temporal gyrus, temporoocciptal part
+#	fslmaths \
+#	$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+#	-thr 25 -uthr 25 -bin \
+#	${outdirAtlasExtraction}/LH-MTG-mask-bin.nii.gz \
+#	-odt char
+#	
+#	fslmaths \
+#	$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+#	-thr 25 -uthr 25 \
+#	${outdirAtlasExtraction}/LH-MTG-mask-orig.nii.gz \
+#	-odt char
+#	
+#	#right middle temporal gyrus, temporoocciptal part
+#	fslmaths \
+#	$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+#	-thr 26 -uthr 26 -bin \
+#	${outdirAtlasExtraction}/RH-MTG-mask-bin.nii.gz \
+#	-odt char
+#	
+#	fslmaths \
+#	$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+#	-thr 26 -uthr 26 \
+#	${outdirAtlasExtraction}/RH-MTG-mask-orig.nii.gz \
+#	-odt char
+
 
 #creating one file per existing region
 
@@ -179,32 +215,6 @@ $FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz 
 ${outdirAtlasExtraction}/RH-STG-mask-orig.nii.gz \
 -odt char
 
-#left middle temporal gyrus, temporoocciptal part
-fslmaths \
-$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
--thr 25 -uthr 25 -bin \
-${outdirAtlasExtraction}/LH-MTG-mask-bin.nii.gz \
--odt char
-
-fslmaths \
-$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
--thr 25 -uthr 25 \
-${outdirAtlasExtraction}/LH-MTG-mask-orig.nii.gz \
--odt char
-
-#right middle temporal gyrus, temporoocciptal part
-fslmaths \
-$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
--thr 26 -uthr 26 -bin \
-${outdirAtlasExtraction}/RH-MTG-mask-bin.nii.gz \
--odt char
-
-fslmaths \
-$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
--thr 26 -uthr 26 \
-${outdirAtlasExtraction}/RH-MTG-mask-orig.nii.gz \
--odt char
-
 #left middle temporal gyrus, posterior division 
 fslmaths \
 $FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
@@ -238,8 +248,114 @@ fslmaths ${outdirAtlasExtraction}/LH-Ang-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-Supram-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/LH-STG-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-STG-mask-orig.nii.gz \
--add ${outdirAtlasExtraction}/LH-MTG-mask-orig.nii.gz \
--add ${outdirAtlasExtraction}/RH-MTG-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/LH-MTGpost-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-MTGpost-mask-orig.nii.gz \
- ${outdirTempROI}/posteriorLanguageROIs.nii.gz
+ ${outdirTempROI}/posteriorLanguageROIs.nii.g
+
+##################Anterior Language Regions#######################
+
+#Regions from LATERALIZED HO Cortical Atlas
+#81 L Frontal Operculum 
+#82 R Frontal Operculum 
+#09 L Inferior Frontal Gyrus, pars triangularis 
+#10 R Inferior Frontal Gyrus, pars triangularis 
+#11 L Inferior Frontal Gyrus, pars opercularis 
+#12 R Inferior Frontal Gyrus, pars opercularis
+#65 L Frontal Orbital Gyrus, sliced
+#66 R Frontal Orbital Gyrus, sliced
+
+#left frontal operculum
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 81 -uthr 81 -bin \
+${outdirAtlasExtraction}/LH-frontOperc-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 81 -uthr 81 \
+${outdirAtlasExtraction}/LH-frontOperc-mask-orig.nii.gz \
+-odt char
+
+#right frontal operculum
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 82 -uthr 82 -bin \
+${outdirAtlasExtraction}/RH-frontOperc-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 82 -uthr 82 \
+${outdirAtlasExtraction}/RH-frontOperc-mask-orig.nii.gz \
+-odt char
+
+#left inferior frontal gyrus, pars triangularis
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 09 -uthr 09 -bin \
+${outdirAtlasExtraction}/LH-parsTri-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 09 -uthr 09 \
+${outdirAtlasExtraction}/LH-parsTri-mask-orig.nii.gz \
+-odt char
+
+#right inferior frontal gyrus, pars triangularis 
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 10 -uthr 10 -bin \
+${outdirAtlasExtraction}/RH-parsTri-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 10 -uthr 10 \
+${outdirAtlasExtraction}/RH-parsTri-mask-orig.nii.gz \
+-odt char
+
+#left inferior frontal gyrus, pars opercularis
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 11 -uthr 11 -bin \
+${outdirAtlasExtraction}/LH-parsOperc-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 11 -uthr 11 \
+${outdirAtlasExtraction}/LH-parsOperc-mask-orig.nii.gz \
+-odt char
+
+#right inferior frontal gyrus, pars opercularis
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 12 -uthr 12 -bin \
+${outdirAtlasExtraction}/RH-parsOperc-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 12 -uthr 12 \
+${outdirAtlasExtraction}/RH-parsOperc-mask-orig.nii.gz \
+-odt char
+
+#left frontal orbital gyrus
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedOrbitalFrontal.nii.gz
+-thr 65 -uthr 65 -bin \
+${outdirAtlasExtraction}/LH-frontOrbital-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedOrbitalFrontal.nii.gz
+-thr 65 -uthr 65 \
+${outdirAtlasExtraction}/LH-frontOrbital-mask-orig.nii.gz \
+-odt char
+
+#right frontal orbital gyrus
+
+
+###############
