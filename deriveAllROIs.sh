@@ -1,21 +1,26 @@
 #!/bin/sh
 
-
-outdirFinalROI=/home/brain/gitRepos/thesis/regions/FinalROI
-
-mkdir -p $outdirFinalROI
-
-outdirTempROI=/home/brain/gitRepos/thesis/regions/TempROI
-
-mkdir -p $outdirTempROI
-
-outdirAtlasExtraction=/home/brain/gitRepos/thesis/regions/AtlasExtraction
-
-mkdir -p $outdirAtlasExtraction 
+  
+#outdirFinalROes the parent dir of the thesis repo?
+# ...stella's VM: /home/brain/gitRepos
+# ...stowler's scratch session: /netusers/stowler/repos
 
 
+repoParent=/home/brain/gitRepos
+outdirFinalROI=${repoParent}/thesis/regions/FinalROI
 
-################## Posterior Attention: Posterior Cinglulate/Precuneus ############
+#mkdir -p $outdirFinalROI
+
+outdirTempROI=${repoParent}/thesis/regions/TempROI
+
+#mkdir -p $outdirTempROI
+
+outdirAtlasExtraction=${repoParent}/thesis/regions/AtlasExtraction
+
+#mkdir -p $outdirAtlasExtraction
+
+
+############## Posterior EXEC Attention: Posterior Cinglulate/Precuneus ##########
 
 #Regions from LATERALIZED (cortl) H0 Cortical Atlas 
 #61 L Precuneus cortex
@@ -87,7 +92,7 @@ fslmaths ${outdirAtlasExtraction}/LH-Precu-mask-orig.nii.gz \
 #use fslview to visual gyral and sulcal boundaries post atten ROI
 
 
-################ Posterior Language: Posterior Perisylvian Regions #############
+################ Posterior Language: Posterior Perisylvian Regions ################
 
 #Regions from LATERALIZED HO Cortical Atlas
 #41 L Angular Gyrus
@@ -96,17 +101,12 @@ fslmaths ${outdirAtlasExtraction}/LH-Precu-mask-orig.nii.gz \
 #40 R Supramarginal Gyrus, posterior division
 #19 L Superior Temporal Gyrus, posterior division
 #20 R Superior Temporal Gyrus, posterior division
-
+#23 L Middle Temporal Gyrus, posterior division
+#24 R Middle Temporal Gyrus, posterior division
 
 ###Regions omitted
 #25 L Middle Temporal Gyrus, temporooccipital part
-#26 R Middle Temporal egions from LATERALIZED HO Cortical Atlas
-#41 L Angular Gyrus
-#42 R Angular Gyrus
-#39 L Supramarginal Gyrus, posterior division
-#40 R Supramarginal Gyrus, posterior division
-#19 L Superior Temporal Gyrus, posterior division
-#20 R Superior Temporal Gyrus, posterior division
+#26 R Middle Temporal Gyrus, temporooccipital part 
 
 #	#left middle temporal gyrus, temporoocciptal part
 #	fslmaths \
@@ -252,7 +252,7 @@ fslmaths ${outdirAtlasExtraction}/LH-Ang-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-MTGpost-mask-orig.nii.gz \
  ${outdirTempROI}/posteriorLanguageROIs.nii.g
 
-##################Anterior Language Regions#######################
+###################### Anterior Language: Inferior Frontal Gyrus ##################
 
 #Regions from LATERALIZED HO Cortical Atlas
 #81 L Frontal Operculum 
@@ -357,5 +357,131 @@ ${outdirAtlasExtraction}/LH-frontOrbital-mask-orig.nii.gz \
 
 #right frontal orbital gyrus
 
+#create subset for visualization in fslview and decisions about boundaries
+fslmaths ${outdirAtlasExtraction}/LH-frontOperc-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/RH-frontOperc-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/LH-parsTri-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/RH-parsTri-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/LH-parsOperc-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/RH-parsOperc-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/LH-frontOrbital-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/ \
+ ${outdirTempROI}/anteriorLanguageROIs.nii.gz
 
-###############
+####################### Primary Motor Area ########################################
+
+#Regions manually drawn using MNI 152 template
+#1 L Hand Bump
+#1 R Hand Bump
+
+#create subset for visualization in fslview 
+fslmaths ${outdirAtlasExtraction}/initialHandbump_LH_20140703.nii.gz \
+-add ${outdirAtlasExtraction}/initialHandbump_RH_20140703.nii.gz \
+ ${outdirTempROI}/primaryMotorROIs.nii.gz
+
+####################### Supplementary Motor Area ##################################
+#Regions from LATERALIZED HO Cortical Atlas
+#47 L Juxtapositional Lobule
+#93 R Juxtapositional Lobule
+
+#left juxtapositional lobule
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+-thr 47 -uthr 47 -bin \
+${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+-thr 47 -uthr 47 \
+${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-orig.nii.gz \
+-odt char
+
+#right juxtapositional lobule
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+-thr 93 -uthr 93 -bin \
+${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+-thr 93 -uthr 93 \
+${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-orig.nii.gz \
+-odt char
+
+#create subset for visualization in fslview and decisions about boundaries
+fslmaths ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-orig.nii.gz \
+ ${outdirTempROI}/supplementaryMotorArea.nii.gz
+
+
+###################### Anterior EXEC Control: preSMA #############################
+
+#51 L Juxtapositional Lobule
+#52 R Juxtapositional Lobule
+#05 L Superior Frontal Gyrus
+#06 R Superior Frontal Gyrus
+
+#left juxtapositional lobule
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+-thr 51 -uthr 51 -bin \
+${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+-thr 51 -uthr 51 \
+${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-orig.nii.gz \
+-odt char
+
+#right juxtapositional lobule
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+-thr 52 -uthr 52 -bin \
+${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+-thr 52 -uthr 52 \
+${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-orig.nii.gz \
+-odt char
+
+#left superior frontal gyrus 
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+-thr 5 -uthr 5 -bin \
+${outdirAtlasExtraction}/LH-superiorFrontal-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+-thr 5 -uthr 5 \
+${outdirAtlasExtraction}/LH-superiorFrontal-mask-orig.nii.gz \
+-odt char
+
+#right superior frontal gyrus 
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+-thr 6 -uthr 6 -bin \
+${outdirAtlasExtraction}/RH-superiorFrontal-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+-thr 6 -uthr 6 \
+${outdirAtlasExtraction}/RH-superiorFrontal-mask-orig.nii.gz \
+-odt char
+
+#create subset for visualization in fslview and decisions about boundaries
+fslmaths ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/LH-superiorFrontal-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/RH-superiorFrontal-mask-orig.nii.gz \
+ ${outdirTempROI}/preSupplementaryMotorArea.nii.gz
+
+
+###################### Posterior MOTOR Control: PosteriorCingulate/PreCun #########
+#
