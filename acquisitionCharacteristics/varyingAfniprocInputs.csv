@@ -54,11 +54,8 @@ blind,task,session,sliceOrder
 038,motor,B,default
 039,motor,B,default
 041,motor,B,default
-043,motor,B,default
 044,motor,B,default
 046,motor,B,default
-048,motor,B,default
-050,motor,B,default
 052,motor,B,ascending
 053,motor,B,ascending
 056,motor,B,ascending
@@ -68,7 +65,6 @@ blind,task,session,sliceOrder
 066,motor,B,ascending
 067,motor,B,ascending
 070,motor,B,ascending
-072,motor,B,ascending
 074,motor,B,ascending
 076,motor,B,ascending
 079,motor,B,ascending
