@@ -11,7 +11,7 @@ clear
 
 # I'm using $projectDir to hold the location of my git source dir, where this
 # script and supporting files live during development:
-projDir=~/gitRepos/thesis/
+projDir=${HOME}/gitRepos/thesis/
 
 
 # $apInputs is a .csv file coding sessionXsequence variations that will affect
@@ -71,7 +71,7 @@ cat $apInputs
 echo ""
 
 # begin while-read loop:
-sed 1d $apInputs | while IFS="," read blind session task sliceOrder; do
+sed 1d $apInputs | while IFS="," read blind task session sliceOrder; do
    echo "====================================================="
    echo "\$blind==${blind}"
    echo "\$task==${task}"
@@ -93,7 +93,7 @@ sed 1d $apInputs | while IFS="," read blind session task sliceOrder; do
    ################################################################################
    # name of epi acqfile depends on whether task is "cowat" or "motor":
    ################################################################################
-   epi="${acqParentDir}/MA${blind}/sess${session}/${task}/MA${blind}_MNI.nii.gz"
+   epi="${acqParentDir}/MA${blind}/sess${session}/${task}/epi01_MNI.nii.gz"
    echo ""
    echo "\$epi==$epi"
    ls -al $epi
@@ -104,7 +104,7 @@ sed 1d $apInputs | while IFS="," read blind session task sliceOrder; do
    # stim times vary by task ($task is read in at top of this while-read loop):
    ################################################################################
    case "$task" in
-      cowat)
+      language)
          stimTimes="${projDir}/stimulusTiming/stimTimes-cowat-letters.1D ${projDir}/stimulusTiming/stimTimes-cowat-categories.1D"
          stimLabel="lets cats"
       ;;
@@ -116,6 +116,7 @@ sed 1d $apInputs | while IFS="," read blind session task sliceOrder; do
    echo ""
    echo "\$stimLabel==$stimLabel"
    echo "\$stimTimes==$stimTimes"
+   ls -al $stimTimes
    echo ""
 
 
@@ -130,11 +131,12 @@ sed 1d $apInputs | while IFS="," read blind session task sliceOrder; do
          sliceTimes="${projDir}/acquisitionCharacteristics/seq_ascending_slice_timing_TR2000ms_37slices.txt.txt"
       ;;
       default)
-	 sliceTimes="${projDir}/acquisitionCharacteristics/default_slice_timing_TR2000ms_sl37.txt.txt"
+	 sliceTimes="${projDir}/acquisitionCharacteristics/default_slice_timing_TR2000_sl37.txt.txt"
       ;;
    esac
    echo ""
    echo "\$sliceTimes==$sliceTimes"
+   ls -al $sliceTimes
    echo ""
 
 
@@ -166,7 +168,7 @@ sed 1d $apInputs | while IFS="," read blind session task sliceOrder; do
       #   Removed commands to run TENT functions; only doing BLOCK.
 
       case "$task" in
-         cowat)
+         language)
             basisFxn="BLOCK(15,1)"
          ;;
          motor)
@@ -196,11 +198,10 @@ sed 1d $apInputs | while IFS="," read blind session task sliceOrder; do
       -regress_stim_labels ${stimLabel} \
       -regress_basis ${basisFxn} \
       -regress_apply_mot_types demean \
-      -regress_censor_motion 0.3 \
-      -regress_censor_outliers 0.1 \
+      -regress_censor_outliers 0.9 \
       -regress_compute_fitts \
-      -regress_opts_3dD -fout -nobout -jobs 8 ${goforit3dD} \
-      -regress_opts_reml -quiet ${goforitREML} \
+      -regress_opts_3dD -fout -nobout -jobs 8 \
+      -regress_opts_reml -quiet \
       -regress_run_clustsim yes \
       -regress_est_blur_epits \
       -regress_est_blur_errts \
