@@ -125,13 +125,13 @@ sed 1d $apInputs | while IFS="," read blind task session sliceOrder; do
    ################################################################################
    case "$sliceOrder" in
       interleaved)
-         sliceTimes="${projDir}/acquisitionCharacteristics/interleaved_slice_timing_TR2000ms_37slices.txt.txt"
+         sliceTimes="${projDir}/acquisitionCharacteristics/interleaved_slice_timing_TR2000ms_37slices.txt"
       ;;
       ascending)
-         sliceTimes="${projDir}/acquisitionCharacteristics/seq_ascending_slice_timing_TR2000ms_37slices.txt.txt"
+         sliceTimes="${projDir}/acquisitionCharacteristics/seq_ascending_slice_timing_TR2000ms_37slices.txt"
       ;;
       default)
-	 sliceTimes="${projDir}/acquisitionCharacteristics/default_slice_timing_TR2000_sl37.txt.txt"
+	 sliceTimes="${projDir}/acquisitionCharacteristics/default_slice_timing_TR2000_sl37.txt"
       ;;
    esac
    echo ""
