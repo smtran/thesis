@@ -23,7 +23,7 @@ projDir=${HOME}/gitRepos/thesis/
 #    010,motor,interleaved
 #    014,cowat,interleaved
 #
-apInputs="${projDir}/acquisitionCharacteristics/varyingAfniprocInputs.csv"
+apInputs="${projDir}/acquisitionCharacteristics/varyingAfniprocInputs20141103.csv"
 echo ""
 echo "\$apInputs==$apInputs"
 ls -al $apInputs
