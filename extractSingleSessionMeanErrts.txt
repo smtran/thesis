@@ -1,0 +1,26 @@
+#!/bin/bash
+#script created 11/05/2014 to extract mean error timeseries in regions of interest
+
+parentDir="/data/birc/Atlanta/tranThesis/03.derivedData/meanErrts/"
+
+for blind in 010 012 014 020 021 022 023 025 027 028 029 031 033 035 036 038 039 041 044 046 049 052 053 055 056 058 062 065 066 067 070 074 076 079; do
+
+	for task in language motor; do
+	
+		#Extract meaningful voxels thresholded at R^2=.12. All voxels less than .12 are assigned value of zero.
+		3dmerge -prefix ${parentDir}/MA${blind}/${task}/MA${blind}_rsqThres12.nii.gz -1clip .12 ${HOME}/temp/batch-tranThesis-20141105180255/results.MA${blind}.${task}.onsetsBlock/stats.MA${blind}.${task}.onsetsBlock_REML+orig.BRIK
+
+		#Create binarized mask of suprathreshold voxels. All nonzero voxels are assigned value of one.
+		fslmaths ${parentDir}/MA${blind}/${task}/MA${blind}_rsqThresh12.nii.gz -bin ${parentDir}/MA${blind}/${task}/MA${blind}_rsqThresh12_bin.nii.gz -odt char
+
+		#Create thresholded error timeseries. All suprathreshold voxels in error timeseries retain original value. All subthreshold voxels in error timeseries assigned value of zero.
+		3dcalc -a ${parentDir}/MA${blind}/${task}/MA${blind}_rsqThresh12_bin.nii.gz -b ${HOME}/temp/batch-tranThesis-20141105180255/results.MA${blind}.${task}.onsetsBlock/errts.MA${blind}.${task}.onsetsBlock_REML+orig.BRIK -expr 'a*b' -prefix ${parentDir}/MA${blind}/${task}/MA${blind}_rsqThresh12_errts.nii.gz
+
+		#Create mean error time series for regions of interest. Averages all suprathreshold voxels within region of interest. Output results to text file.
+		for ROI in blah1 blah2 blah3 STILL NEED TO COMPLETE; do
+	
+			3dROIstats -mask ${HOME}/gitRepos/thesis/regions/TempROI/${ROI}ROIs.nii.gz ${parentDir}/MA${blind}/${task}/MA${blind}_rsqThresh12_errts.nii.gz > ${parentDir}/MA${blind}/${task}/MA${blind}_rsqThresh12_errts_mean.txt
+	
+		done 
+	done
+done

@@ -193,14 +193,14 @@ sed 1d $apInputs | while IFS="," read blind task session sliceOrder; do
       -tcat_remove_first_trs ${disdacqs} \
       -volreg_align_to first \
       -volreg_interp -Fourier \
-      -blur_size 5.5 \
+      -blur_size 6 \
       -regress_stim_times ${stimTimes} \
       -regress_stim_labels ${stimLabel} \
       -regress_basis ${basisFxn} \
       -regress_apply_mot_types demean \
       -regress_censor_outliers 0.9 \
       -regress_compute_fitts \
-      -regress_opts_3dD -fout -nobout -jobs 8 \
+      -regress_opts_3dD -fout -rout -nobout -jobs 8 \
       -regress_opts_reml -quiet \
       -regress_run_clustsim yes \
       -regress_est_blur_epits \
