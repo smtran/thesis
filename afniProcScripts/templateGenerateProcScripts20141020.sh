@@ -11,7 +11,7 @@ clear
 
 # I'm using $projectDir to hold the location of my git source dir, where this
 # script and supporting files live during development:
-projDir=${HOME}/gitRepos/thesis/
+projDir="/data/birc/Atlanta/tranThesis/gitRepos/thesis/"
 
 
 # $apInputs is a .csv file coding sessionXsequence variations that will affect
@@ -34,7 +34,7 @@ echo ""
 # batch (i.e., ~300 line proc scripts for the participants and their afni_proc
 # results directories)
 startDateTime="`date +%Y%m%d%H%M%S`"
-tempDirBatch="${HOME}/temp/batch-tranThesis-${startDateTime}"
+tempDirBatch="/data/birc/Atlanta/tranThesis/afniProcScriptOutput/batch-tranThesis-${startDateTime}"
 rm -fr ${tempDirBatch}
 mkdir -p ${tempDirBatch}
 cd ${tempDirBatch}

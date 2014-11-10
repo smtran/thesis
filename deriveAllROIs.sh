@@ -3,21 +3,21 @@
   
 #outdirFinalROes the parent dir of the thesis repo?
 # ...stella's VM: /home/brain/gitRepos
-# ...stowler's scratch session: /netusers/stowler/repos
+#....stella's qball3: /data/birc/Atlanta/tranThesis/gitRepos/
 
 
-repoParent=/home/brain/gitRepos
-outdirFinalROI=${repoParent}/thesis/regions/FinalROI
+repoParent="data/birc/Atlanta/tranThesis/gitRepos/"
+outdirFinalROI="${repoParent}/thesis/regions/FinalROI"
 
-#mkdir -p $outdirFinalROI
+mkdir -p $outdirFinalROI
 
-outdirTempROI=${repoParent}/thesis/regions/TempROI
+outdirTempROI="${repoParent}/thesis/regions/TempROI"
 
-#mkdir -p $outdirTempROI
+mkdir -p $outdirTempROI
 
-outdirAtlasExtraction=${repoParent}/thesis/regions/AtlasExtraction
+outdirAtlasExtraction="${repoParent}/thesis/regions/AtlasExtraction"
 
-#mkdir -p $outdirAtlasExtraction
+mkdir -p $outdirAtlasExtraction
 
 
 ############## Posterior EXEC Attention: Posterior Cinglulate/Precuneus ##########
@@ -356,6 +356,18 @@ ${outdirAtlasExtraction}/LH-frontOrbital-mask-orig.nii.gz \
 -odt char
 
 #right frontal orbital gyrus
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedOrbitalFrontal.nii.gz
+-thr 66 -uthr 66 -bin
+${outdirAtlasExtraction}/RH-frontOrbital-mask-bin.nii.gz
+-odt char
+
+fslmaths \
+${outdirAtlasExtraction}/cortl_slicedOrbitalFrontal.nii.gz
+-thr 66 -uthr 66 
+${outdirAtlasExtraction}/RH-frontOrbital-mask-orig.nii.gz
+-odt char
+
 
 #create subset for visualization in fslview and decisions about boundaries
 fslmaths ${outdirAtlasExtraction}/LH-frontOperc-mask-orig.nii.gz \
@@ -365,7 +377,7 @@ fslmaths ${outdirAtlasExtraction}/LH-frontOperc-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/LH-parsOperc-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-parsOperc-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/LH-frontOrbital-mask-orig.nii.gz \
--add ${outdirAtlasExtraction}/ \
+-add ${outdirAtlasExtraction}/RH-frontOrbital-mask-orig.nii.gz \
  ${outdirTempROI}/anteriorLanguageROIs.nii.gz
 
 ####################### Primary Motor Area ########################################
@@ -375,8 +387,8 @@ fslmaths ${outdirAtlasExtraction}/LH-frontOperc-mask-orig.nii.gz \
 #1 R Hand Bump
 
 #create subset for visualization in fslview 
-fslmaths ${outdirAtlasExtraction}/initialHandbump_LH_20140703.nii.gz \
--add ${outdirAtlasExtraction}/initialHandbump_RH_20140703.nii.gz \
+fslmaths ${outdirAtlasExtraction}/STHandbump_LH_20140829.nii.gz \
+-add ${outdirAtlasExtraction}/STHandbump_RH_20140829.nii.gz \
  ${outdirTempROI}/primaryMotorROIs.nii.gz
 
 ####################### Supplementary Motor Area ##################################
@@ -386,26 +398,26 @@ fslmaths ${outdirAtlasExtraction}/initialHandbump_LH_20140703.nii.gz \
 
 #left juxtapositional lobule
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 47 -uthr 47 -bin \
 ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 47 -uthr 47 \
 ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-orig.nii.gz \
 -odt char
 
 #right juxtapositional lobule
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 93 -uthr 93 -bin \
 ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 93 -uthr 93 \
 ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-orig.nii.gz \
 -odt char
@@ -413,7 +425,7 @@ ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-orig.nii.gz \
 #create subset for visualization in fslview and decisions about boundaries
 fslmaths ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-orig.nii.gz \
- ${outdirTempROI}/supplementaryMotorArea.nii.gz
+ ${outdirTempROI}/supplementaryMotorAreaROIs.nii.gz
 
 
 ###################### Anterior EXEC Control: preSMA #############################
@@ -425,52 +437,52 @@ fslmaths ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-orig.nii.gz \
 
 #left juxtapositional lobule
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 51 -uthr 51 -bin \
 ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 51 -uthr 51 \
 ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-orig.nii.gz \
 -odt char
 
 #right juxtapositional lobule
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 52 -uthr 52 -bin \
 ${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 52 -uthr 52 \
 ${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-orig.nii.gz \
 -odt char
 
 #left superior frontal gyrus 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 5 -uthr 5 -bin \
 ${outdirAtlasExtraction}/LH-superiorFrontal-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 5 -uthr 5 \
 ${outdirAtlasExtraction}/LH-superiorFrontal-mask-orig.nii.gz \
 -odt char
 
 #right superior frontal gyrus 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-bin.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 6 -uthr 6 -bin \
 ${outdirAtlasExtraction}/RH-superiorFrontal-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule-mask-orig.nii.gz
+${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz
 -thr 6 -uthr 6 \
 ${outdirAtlasExtraction}/RH-superiorFrontal-mask-orig.nii.gz \
 -odt char
@@ -480,7 +492,7 @@ fslmaths ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/LH-superiorFrontal-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-superiorFrontal-mask-orig.nii.gz \
- ${outdirTempROI}/preSupplementaryMotorArea.nii.gz
+ ${outdirTempROI}/preSupplementaryMotorAreaROIs.nii.gz
 
 
 ###################### Posterior MOTOR Attention: PosteriorCingulate/PreCun ##########
