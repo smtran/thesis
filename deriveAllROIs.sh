@@ -7,14 +7,23 @@
 
 
 repoParent="/data/birc/Atlanta/tranThesis/gitRepos"
+
+#modified regions of the H-O atlas or regions created (i.e., hand bump)
+inputDir="${repoParent}/thesis/regions/modifiedRegions"
+
+mkdir -p $inputDir
+
+#masks that will be used to extract residual time series
 outdirFinalROI="${repoParent}/thesis/regions/FinalROI"
 
 mkdir -p $outdirFinalROI
 
+#masks (nonbinary) that will be used to visually inspect boundaries
 outdirTempROI="${repoParent}/thesis/regions/TempROI"
 
 mkdir -p $outdirTempROI
 
+#regions extracted from H-O atlas or from modified regions of the H-O atlas
 outdirAtlasExtraction="${repoParent}/thesis/regions/AtlasExtraction"
 
 mkdir -p $outdirAtlasExtraction
@@ -32,52 +41,52 @@ mkdir -p $outdirAtlasExtraction
 
 #left precuneus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorAttentionROI.nii.gz \
 -thr 61 -uthr 61 -bin \
 ${outdirAtlasExtraction}/LH-Precu-mask-bin.nii.gz \
 -odt char 
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorAttentionROI.nii.gz \
 -thr 61 -uthr 61 \
 ${outdirAtlasExtraction}/LH-Precu-mask-orig.nii.gz \
 -odt char 
 
 #left cingulate gyrus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorAttentionROI.nii.gz \
 -thr 59 -uthr 59 -bin \
 ${outdirAtlasExtraction}/LH-CingulatePosterior-mask-bin.nii.gz \
 -odt char 
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorAttentionROI.nii.gz \
 -thr 59 -uthr 59 \
 ${outdirAtlasExtraction}/LH-CingulatePosterior-mask-orig.nii.gz \
 -odt char 
 
 #right precuneus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorAttentionROI.nii.gz \
 -thr 62 -uthr 62 -bin \
 ${outdirAtlasExtraction}/RH-Precu-mask-bin.nii.gz \
 -odt char 
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorAttentionROI.nii.gz \
 -thr 62 -uthr 62 \
 ${outdirAtlasExtraction}/RH-Precu-mask-orig.nii.gz \
 -odt char 
 
 #right cingulate gyrus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorAttentionROI.nii.gz \
 -thr 60 -uthr 60 -bin \
 ${outdirAtlasExtraction}/RH-CingulatePosterior-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorAttentionROI.nii.gz \
 -thr 60 -uthr 60 \
 ${outdirAtlasExtraction}/RH-CingulatePosterior-mask-orig.nii.gz \
 -odt char
@@ -90,6 +99,15 @@ fslmaths ${outdirAtlasExtraction}/LH-Precu-mask-orig.nii.gz \
  ${outdirTempROI}/posteriorAttentionROIs.nii.gz
 
 #use fslview to visual gyral and sulcal boundaries post atten ROI
+
+#create binarized mask for each hemisphere
+fslmaths ${outdirAtlasExtraction}/LH-Precu-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-CingulatePosterior-mask-bin.nii.gz \
+${outdirFinalROI}/LH-posteriorExecutiveAttention-mask-bin.nii.gz
+
+fslmaths ${outdirAtlasExtraction}/RH-Precu-maksk-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-CingulatePosterior-mask-bin.nii.gz \
+${outdirFinalROI}/RH-posteriorExecutiveAttention-mask-bin.nii.gz
 
 
 ################ Posterior Language: Posterior Perisylvian Regions ################
@@ -250,7 +268,21 @@ fslmaths ${outdirAtlasExtraction}/LH-Ang-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-STG-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/LH-MTGpost-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-MTGpost-mask-orig.nii.gz \
- ${outdirTempROI}/posteriorLanguageROIs.nii.g
+ ${outdirTempROI}/posteriorLanguageROIs.nii.gz
+
+#create binarized mask to extract residuals for each hemisphere
+fslmaths ${outdirAtlasExtraction}/LH-Ang-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-Supram-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-STG-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-MTGpost-mask-bin.nii.gz \
+${FinalROI}/LH-posteriorLanguage-mask-bin.nii.gz
+
+fslmaths ${outdirAtlasExtraction}/LH-Ang-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-Supram-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-STG-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-MTGpost-mask-bin.nii.gz \
+${FinalROI}/RH-posteriorLanguage-mask-bin.nii.gz
+
 
 ###################### Anterior Language: Inferior Frontal Gyrus ##################
 
@@ -344,26 +376,26 @@ ${outdirAtlasExtraction}/RH-parsOperc-mask-orig.nii.gz \
 
 #left frontal orbital gyrus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedOrbitalFrontal.nii.gz \
+${inputDir}/cortl_slicedOrbitalFrontal.nii.gz \
 -thr 65 -uthr 65 -bin \
 ${outdirAtlasExtraction}/LH-frontOrbital-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedOrbitalFrontal.nii.gz \
+${inputDir}/cortl_slicedOrbitalFrontal.nii.gz \
 -thr 65 -uthr 65 \
 ${outdirAtlasExtraction}/LH-frontOrbital-mask-orig.nii.gz \
 -odt char
 
 #right frontal orbital gyrus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedOrbitalFrontal.nii.gz \
+${inputDir}/cortl_slicedOrbitalFrontal.nii.gz \
 -thr 66 -uthr 66 -bin \
 ${outdirAtlasExtraction}/RH-frontOrbital-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedOrbitalFrontal.nii.gz \
+${inputDir}/cortl_slicedOrbitalFrontal.nii.gz \
 -thr 66 -uthr 66 \
 ${outdirAtlasExtraction}/RH-frontOrbital-mask-orig.nii.gz \
 -odt char
@@ -380,6 +412,19 @@ fslmaths ${outdirAtlasExtraction}/LH-frontOperc-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-frontOrbital-mask-orig.nii.gz \
  ${outdirTempROI}/anteriorLanguageROIs.nii.gz
 
+#create binarized mask for each hemisphere to extract residuals
+fslmaths ${outdirAtlasExtraction}/LH-frontOperc-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-parsTri-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-parsOperc-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-frontOrbital-mask-bin.nii.gz \
+${FinalROI}/LH-anteriorLanguage-mask-bin.nii.gz
+
+fslmaths ${outdirAtlasExtraction}/RH-frontOperc-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-parsTri-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-parsOperc-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-frontOrbital-mask-bin.nii.gz \
+${FinalROI}/RH-anteriorLanguage-mask-bin.nii.gz
+
 ####################### Primary Motor Area ########################################
 
 #Regions manually drawn using MNI 152 template
@@ -387,9 +432,16 @@ fslmaths ${outdirAtlasExtraction}/LH-frontOperc-mask-orig.nii.gz \
 #1 R Hand Bump
 
 #create subset for visualization in fslview 
-fslmaths ${outdirAtlasExtraction}/STHandbump_LH_20140829.nii.gz \
--add ${outdirAtlasExtraction}/STHandbump_RH_20140829.nii.gz \
+fslmaths ${inputDir}/STHandbump_LH_20140829.nii.gz \
+-add ${inputDir}/STHandbump_RH_20140829.nii.gz \
  ${outdirTempROI}/primaryMotorROIs.nii.gz
+
+#create binarized mask for each hemisphere to extract residuals
+cp ${inputDir}/STHandbump_LH_20140829.nii.gz \
+${FinalROI}/LH-primaryMotorArea-mask-bin.nii.gz 
+
+cp ${inputDir}/STHandbump_RH_20140829.nii.gz \
+${FinalROI}/RH-primaryMotorArea-mask-bin.nii.gz 
 
 ####################### Supplementary Motor Area ##################################
 #Regions from LATERALIZED HO Cortical Atlas
@@ -398,26 +450,26 @@ fslmaths ${outdirAtlasExtraction}/STHandbump_LH_20140829.nii.gz \
 
 #left juxtapositional lobule
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 47 -uthr 47 -bin \
 ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 47 -uthr 47 \
 ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-orig.nii.gz \
 -odt char
 
 #right juxtapositional lobule
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 93 -uthr 93 -bin \
 ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 93 -uthr 93 \
 ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-orig.nii.gz \
 -odt char
@@ -427,6 +479,12 @@ fslmaths ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-orig.nii.gz \
  ${outdirTempROI}/supplementaryMotorAreaROIs.nii.gz
 
+#create binarized mask for each hemisphere to extract residuals
+cp ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-bin.nii.gz \
+${FinalROI}/LH-supplementaryMotorArea-mask-bin.nii.gz
+
+cp ${outdirAtlasExtraction}/RH-SMAjuxtaLobule-mask-bin.nii.gz \
+${FinalROI}/RH-supplementaryMotorArea-mask-bin.nii.gz
 
 ###################### Anterior EXEC Control: preSMA #############################
 
@@ -437,52 +495,52 @@ fslmaths ${outdirAtlasExtraction}/LH-SMAjuxtaLobule-mask-orig.nii.gz \
 
 #left juxtapositional lobule
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 51 -uthr 51 -bin \
 ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 51 -uthr 51 \
 ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-orig.nii.gz \
 -odt char
 
 #right juxtapositional lobule
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 52 -uthr 52 -bin \
 ${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 52 -uthr 52 \
 ${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-orig.nii.gz \
 -odt char
 
 #left superior frontal gyrus 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 5 -uthr 5 -bin \
 ${outdirAtlasExtraction}/LH-superiorFrontal-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 5 -uthr 5 \
 ${outdirAtlasExtraction}/LH-superiorFrontal-mask-orig.nii.gz \
 -odt char
 
 #right superior frontal gyrus 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 6 -uthr 6 -bin \
 ${outdirAtlasExtraction}/RH-superiorFrontal-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedJuxtaLobule.nii.gz \
+${inputDir}/cortl_slicedJuxtaLobule.nii.gz \
 -thr 6 -uthr 6 \
 ${outdirAtlasExtraction}/RH-superiorFrontal-mask-orig.nii.gz \
 -odt char
@@ -494,6 +552,14 @@ fslmaths ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-superiorFrontal-mask-orig.nii.gz \
  ${outdirTempROI}/preSupplementaryMotorAreaROIs.nii.gz
 
+#create binarized mask for each hemisphere to extract residuals
+fslmaths ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-superiorFrontal-mask-bin.nii.gz \
+${FinalROI}/LH-anteriorExecutiveAttention-mask-bin.nii.gz
+
+fslmaths ${outdirAtlasExtraction}/RH-preSMAjuxtaLobule-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-superiorFrontal-mask-bin.nii.gz \
+${FinalROI}/RH-anteriorExecutiveAttention-mask-bin.nii.gz
 
 ###################### Posterior MOTOR Attention: PosteriorCingulate/PreCun ##########
 #Regions from LATERALIZED (cortl) H0 Cortical Atlas 
@@ -506,52 +572,52 @@ fslmaths ${outdirAtlasExtraction}/LH-preSMAjuxtaLobule-mask-orig.nii.gz \
 
 #left precuneus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
 -thr 61 -uthr 61 -bin \
 ${outdirAtlasExtraction}/LH-Precu-MOTOR-mask-bin.nii.gz \
 -odt char 
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
 -thr 61 -uthr 61 \
 ${outdirAtlasExtraction}/LH-Precu-MOTOR-mask-orig.nii.gz \
 -odt char 
 
 #left cingulate gyrus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
 -thr 59 -uthr 59 -bin \
 ${outdirAtlasExtraction}/LH-CingulatePosterior-MOTOR-mask-bin.nii.gz \
 -odt char 
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
 -thr 59 -uthr 59 \
 ${outdirAtlasExtraction}/LH-CingulatePosterior-MOTOR-mask-orig.nii.gz \
 -odt char 
 
 #right precuneus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
 -thr 62 -uthr 62 -bin \
 ${outdirAtlasExtraction}/RH-Precu-MOTOR-mask-bin.nii.gz \
 -odt char 
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
 -thr 62 -uthr 62 \
 ${outdirAtlasExtraction}/RH-Precu-MOTOR-mask-orig.nii.gz \
 -odt char 
 
 #right cingulate gyrus
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
 -thr 60 -uthr 60 -bin \
 ${outdirAtlasExtraction}/RH-CingulatePosterior-MOTOR-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${outdirAtlasExtraction}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
+${inputDir}/cortl_slicedPosteriorMotorAttentionROI.nii.gz \
 -thr 60 -uthr 60 \
 ${outdirAtlasExtraction}/RH-CingulatePosterior-MOTOR-mask-orig.nii.gz \
 -odt char
@@ -562,5 +628,14 @@ fslmaths ${outdirAtlasExtraction}/LH-Precu-MOTOR-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-Precu-MOTOR-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-CingulatePosterior-MOTOR-mask-orig.nii.gz \
  ${outdirTempROI}/posteriorMotorAttentionROIs.nii.gz
+
+#create binarized mask for each hemisphere to extract residuals
+fslmaths ${outdirAtlasExtraction}/LH-Precu-MOTOR-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-CingulatePosterior-MOTOR-mask-bin.nii.gz \
+${FinalROI}/LH-posteriorMotorAttention-mask-bin.nii.gz
+
+fslmaths ${outdirAtlasExtraction}/RH-Precu-MOTOR-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-CingulatePosterior-MOTOR-mask-bin.nii.gz \
+${FinalROI}/RH-posteriorMotorAttention-mask-bin.nii.gz
 
 
