@@ -409,26 +409,26 @@ ${outdirAtlasExtraction}/RH-parsOperc-mask-orig.nii.gz \
 
 #left frontal orbital gyrus
 fslmaths \
-${inputDir}/cortl_slicedOrbitalFrontal.nii.gz \
+${inputDir}/cortl_slicedOrbitalFrontal20141215.nii.gz \
 -thr 65 -uthr 65 -bin \
 ${outdirAtlasExtraction}/LH-frontOrbital-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${inputDir}/cortl_slicedOrbitalFrontal.nii.gz \
+${inputDir}/cortl_slicedOrbitalFrontal20141215.nii.gz \
 -thr 65 -uthr 65 \
 ${outdirAtlasExtraction}/LH-frontOrbital-mask-orig.nii.gz \
 -odt char
 
 #right frontal orbital gyrus
 fslmaths \
-${inputDir}/cortl_slicedOrbitalFrontal.nii.gz \
+${inputDir}/cortl_slicedOrbitalFrontal20141215.nii.gz \
 -thr 66 -uthr 66 -bin \
 ${outdirAtlasExtraction}/RH-frontOrbital-mask-bin.nii.gz \
 -odt char
 
 fslmaths \
-${inputDir}/cortl_slicedOrbitalFrontal.nii.gz \
+${inputDir}/cortl_slicedOrbitalFrontal20141215.nii.gz \
 -thr 66 -uthr 66 \
 ${outdirAtlasExtraction}/RH-frontOrbital-mask-orig.nii.gz \
 -odt char
