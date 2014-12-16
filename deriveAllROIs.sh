@@ -123,39 +123,39 @@ ${outdirFinalROI}/RH-posteriorExecutiveAttention-mask-bin.nii.gz
 #20 R Superior Temporal Gyrus, posterior division
 #23 L Middle Temporal Gyrus, posterior division
 #24 R Middle Temporal Gyrus, posterior division
+#25 L Middle Temporal Gyrus, temporoccipital part
+#26 R Middle Temporal Gyrus, temporoccipital part
 
 ###Regions omitted
 #25 L Middle Temporal Gyrus, temporooccipital part
 #26 R Middle Temporal Gyrus, temporooccipital part 
 
-#	#left middle temporal gyrus, temporoocciptal part
-#	fslmaths \
-#	$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
-#	-thr 25 -uthr 25 -bin \
-#	${outdirAtlasExtraction}/LH-MTG-mask-bin.nii.gz \
-#	-odt char
-#	
-#	fslmaths \
-#	$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
-#	-thr 25 -uthr 25 \
-#	${outdirAtlasExtraction}/LH-MTG-mask-orig.nii.gz \
-#	-odt char
-#	
-#	#right middle temporal gyrus, temporoocciptal part
-#	fslmaths \
-#	$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
-#	-thr 26 -uthr 26 -bin \
-#	${outdirAtlasExtraction}/RH-MTG-mask-bin.nii.gz \
-#	-odt char
-#	
-#	fslmaths \
-#	$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
-#	-thr 26 -uthr 26 \
-#	${outdirAtlasExtraction}/RH-MTG-mask-orig.nii.gz \
-#	-odt char
+#left middle temporal gyrus, temporoocciptal part
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 25 -uthr 25 -bin \
+${outdirAtlasExtraction}/LH-MTGtempoccip-mask-bin.nii.gz \
+-odt char
 
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 25 -uthr 25 \
+${outdirAtlasExtraction}/LH-MTGtempoccip-mask-orig.nii.gz \
+-odt char
 
-#creating one file per existing region
+#right middle temporal gyrus, temporoocciptal part
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 26 -uthr 26 -bin \
+${outdirAtlasExtraction}/RH-MTGtempoccip-mask-bin.nii.gz \
+-odt char
+
+fslmaths \
+$FSLDIR/data/atlases/HarvardOxford/HarvardOxford-cortl-maxprob-thr25-1mm.nii.gz \
+-thr 26 -uthr 26 \
+${outdirAtlasExtraction}/RH-MTGtempoccip-mask-orig.nii.gz \
+-odt char
+
 
 #left angular gyrus
 fslmaths \
@@ -299,6 +299,8 @@ fslmaths ${outdirAtlasExtraction}/LH-Ang-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-STG-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/LH-MTGpost-mask-orig.nii.gz \
 -add ${outdirAtlasExtraction}/RH-MTGpost-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/LH-MTGtempoccip-mask-orig.nii.gz \
+-add ${outdirAtlasExtraction}/RH-MTGtempoccip-mask-orig.nii.gz \
 ${outdirTempROI}/posteriorLanguageROIs.nii.gz
 
 #create binarized mask to extract residuals for each hemisphere
@@ -307,6 +309,7 @@ fslmaths ${outdirAtlasExtraction}/LH-Ang-mask-bin.nii.gz \
 -add ${outdirAtlasExtraction}/LH-SupramAnt-mask-bin.nii.gz \
 -add ${outdirAtlasExtraction}/LH-STG-mask-bin.nii.gz \
 -add ${outdirAtlasExtraction}/LH-MTGpost-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/LH-MTGtempoccip-mask-bin.nii.gz \
 ${outdirFinalROI}/LH-posteriorLanguage-mask-bin.nii.gz
 
 fslmaths ${outdirAtlasExtraction}/RH-Ang-mask-bin.nii.gz \
@@ -314,6 +317,7 @@ fslmaths ${outdirAtlasExtraction}/RH-Ang-mask-bin.nii.gz \
 -add ${outdirAtlasExtraction}/RH-SupramAnt-mask-bin.nii.gz \
 -add ${outdirAtlasExtraction}/RH-STG-mask-bin.nii.gz \
 -add ${outdirAtlasExtraction}/RH-MTGpost-mask-bin.nii.gz \
+-add ${outdirAtlasExtraction}/RH-MTGtempoccip-mask-bin.nii.gz \
 ${outdirFinalROI}/RH-posteriorLanguage-mask-bin.nii.gz
 
 
