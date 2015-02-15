@@ -35,7 +35,7 @@ echo ""
 # batch (i.e., ~300 line proc scripts for the participants and their afni_proc
 # results directories)
 startDateTime="`date +%Y%m%d%H%M%S`"
-tempDirBatch="/data/birc/Atlanta/tranThesis/afniProcScriptOutput/batch-tranThesis-giantMove-${startDateTime}"
+tempDirBatch="/data/birc/Atlanta/tranThesis/03.derivedData/afniProcScriptOutput/batch-tranThesis-giantMove-${startDateTime}"
 rm -fr ${tempDirBatch}
 mkdir -p ${tempDirBatch}
 cd ${tempDirBatch}
