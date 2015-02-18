@@ -1,0 +1,41 @@
+#created 2/17/2015
+#
+# This script copies the skull stripped T1s determined to be acceptable into a ssingle folder from varying input folders. 
+#
+#
+#
+parentDir="/data/birc/Atlanta/tranThesis/03.derivedData/brainExtractT1/"
+#
+outputDir="${parentDir}acceptableSkullStrippedT1s/"
+#
+# Copy all T1s (whole brain + skull) that have been RLS-oriented
+cp ${parentDir}20150211_bwFnirtBotOutput/inNativeSpaceOfT1/betMA0??_t1.nii.gz ${outputDir}
+#
+#
+# Copy skull stripped brain and mask from folder as dictated by f parameter used.
+# Do this by reading csv file that specifies which f parameter is used by each participant.
+#
+#
+fParameterInput="/data/birc/Atlanta/tranThesis/gitRepos/thesis/registrationScripts/fParameterInput.csv"
+#
+# begin while-read loop:
+sed 1d $fParameterInput | while IFS="," read blind f; do
+#
+	case "$f" in 
+
+		0.25)
+			inputDir="${parentDir}20150216_betF25/"
+		;;
+		0.20)
+			inputDir="${parentDir}20150217_betF20/"
+		;;
+		0.15)
+			inputDir="${parentDir}20150217_betF15/"
+		;;
+	esac
+
+	cp ${inputDir}betMA0${blind}_t1_brain.nii.gz ${outputDir}
+
+	cp ${inputDir}betMA0${blind}_t1_brain_mask.nii.gz $outputDir}
+
+done # end of while-read loop 
