@@ -7,12 +7,12 @@
 #
 #
 #bet paramter -f "fractional intensity threshold" default=0.5; smaller values give larger brain outline estimates#bet parameter -B attempts to reduce image bias and residual neck voxels
-betOpts="-f 0.15 -B"
+betOpts="-f 0.08 -B"
 #
 #
 #
-for blind in 38 39 52 ; do
+for blind in 55 ; do
 
-	bet /data/birc/Atlanta/tranThesis/03.derivedData/brainExtractT1/20150211_bwFnirtBotOutput/inNativeSpaceOfT1/betMA0${blind}_t1.nii.gz /data/birc/Atlanta/tranThesis/03.derivedData/brainExtractT1/20150217_betF15/betMA0${blind}_t1_brain ${betOpts}  
+	bet /data/birc/Atlanta/tranThesis/03.derivedData/brainExtractT1/20150211_bwFnirtBotOutput/inNativeSpaceOfT1/betMA0${blind}_t1.nii.gz /data/birc/Atlanta/tranThesis/03.derivedData/brainExtractT1/20150220_betF08/betMA0${blind}_t1_brain ${betOpts}  
 
 done
