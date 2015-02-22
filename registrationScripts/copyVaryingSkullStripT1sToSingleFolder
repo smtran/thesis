@@ -7,10 +7,10 @@
 #
 parentDir="/data/birc/Atlanta/tranThesis/03.derivedData/brainExtractT1"
 #
-outputDir="${parentDir}/acceptableSkullStrippedT1s/"
+outputDir="${parentDir}/acceptableSkullStrippedT1s"
 #
 # Copy all T1s (whole brain + skull) that have been RPI-oriented
-cp ${parentDir}20150211_bwFnirtBotOutput/inNativeSpaceOfT1/betMA0??_t1.nii.gz ${outputDir}
+cp ${parentDir}/20150211_bwFnirtBotOutput/inNativeSpaceOfT1/betMA0??_t1.nii.gz ${outputDir}
 #
 #
 # Copy skull stripped brain and mask from folder as dictated by f parameter used.
@@ -38,6 +38,9 @@ sed 1d $fParameterInput | while IFS="," read blind f; do
 		;;
 		0.10)
 			inputDir="${parentDir}/20150218_betF10"
+		;;
+		0.08c2)
+			inputDir="${parentDir}/20150220_betF08_c2"
 		;;
 	esac
 

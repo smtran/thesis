@@ -30,13 +30,13 @@ set fmri(featwatcher_yn) 1
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) "/data/birc/Atlanta/tranThesis/03.derivedData/preprocessMELODIC"
+set fmri(outputdir) "/data/birc/Atlanta/tranThesis/03.derivedData/preprocessMELODIC/rest/MA029_preprocessMELODIC"
 
 # TR(s)
 set fmri(tr) 2.000000 
 
 # Total volumes
-set fmri(npts) 150
+set fmri(npts) 225
 
 # Delete volumes
 set fmri(ndelete) 0
@@ -97,7 +97,7 @@ set fmri(unwarp_dir) y-
 # 3 : Use slice order file
 # 4 : Use slice timings file
 # 5 : Interleaved (0, 2, 4 ... 1, 3, 5 ... )
-set fmri(st) 3
+set fmri(st) 5
 
 # Slice timings file
 set fmri(st_file) "/data/birc/Atlanta/tranThesis/gitRepos/thesis/denoiseScripts/sliceTimingErraticInterleaved"
@@ -260,20 +260,20 @@ set fmri(regstandard_nonlinear_warpres) 10
 set fmri(paradigm_hp) 100
 
 # Total voxels
-set fmri(totalVoxels) 35520000
+set fmri(totalVoxels) 53280000
 
 
 # Number of lower-level copes feeding into higher-level analysis
 set fmri(ncopeinputs) 0
 
 # 4D AVW data or FEAT directory (1)
-set feat_files(1) "/data/birc/Atlanta/tranThesis/02.collectedData-TREAT_AS_SENSITIVE/mrSourceNiftisScreened/MA010/sessA/language/epi01_MNI"
+set feat_files(1) "/data/birc/Atlanta/tranThesis/02.collectedData-TREAT_AS_SENSITIVE/mrSourceNiftisScreened/MA029/sessA/rest/epi01_MNI"
 
 # Add confound EVs text file
 set fmri(confoundevs) 0
 
 # Subject's structural image for analysis 1
-set highres_files(1) "/data/birc/Atlanta/tranThesis/03.derivedData/brainExtractT1/acceptableSkullStrippedT1s/betMA010_t1_brain"
+set highres_files(1) "/data/birc/Atlanta/tranThesis/03.derivedData/brainExtractT1/acceptableSkullStrippedT1s/betMA029_t1_brain"
 
 # Resampling resolution
 set fmri(regstandard_res) 0.0
