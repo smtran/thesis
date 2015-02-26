@@ -1,0 +1,4 @@
+# created 2/22/2015
+# Script to take files preprocessed via MELODIC and apply FSL's training file with pre-labeled noise components. 
+
+
