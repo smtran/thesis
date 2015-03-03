@@ -2,11 +2,14 @@
 # created 2/24/2015
 # Script to verify that the correct inputs (i.e., the output filename, EPI, and T1, are all the same subject number, the same session type is used for each participant, and the correct slice timing input) were selected in MELODIC GUI.
 
-# Expected Errors: 
-# Language participants 10, 28, and 52 will show "inconsistent session" because of erroneous naming of the output directory. But once created, they were remaned appriately. 
-# Motor participant 29 was also mislabeled in the output directory naming and was renamed appropriately later. 
+# This script has been modified for particpants whose DOF has been modified from BBR to 6 or 7 DOF.
+
+# Expected Errors:
+# Motor participant 29 in 6DOF will show inconsistent blind due to mislabeled otuput directory. The output was renamed appropriately.
 
 varyingMelodicInputs=$"/data/birc/Atlanta/tranThesis/gitRepos/thesis/denoiseScripts/varyingMelodicInputs.csv"
+
+inputDOF=7
 
 sed 1d $varyingMelodicInputs | while IFS="," read blind task sliceOrder; do
 
@@ -35,7 +38,12 @@ sed 1d $varyingMelodicInputs | while IFS="," read blind task sliceOrder; do
 		;;
 	esac
 
-currentFile="/data/birc/Atlanta/tranThesis/03.derivedData/preprocessMELODIC/${sessionType}/MA${blind}_preprocessMELODIC.ica/design.fsf"
+currentFile="/data/birc/Atlanta/tranThesis/03.derivedData/preprocessMELODIC/${sessionType}_${inputDOF}DOF/MA${blind}_preprocessMELODIC.ica/design.fsf"
+
+# Start if-then statement to only do the following if file exists
+
+if [ -e "${currentFile}" ]
+	then
 
 echo " "
 echo "###########################"
@@ -55,7 +63,7 @@ if [ ${lineCountBlind} -eq 3 ]
 	then 
 		echo " "
 	else
-		echo "INCONSISTENT BLIND!"
+		echo "     INCONSISTENT BLIND!"
 fi
 
 # Check if consistent session type was used (language, rest, motor) for inputs.
@@ -69,7 +77,7 @@ if [ ${lineCountSessionType} -eq 2 ]
 	then
 		echo " "
 	else
-		echo "INCONSISTENT SESSION TYPE!"
+		echo "     INCONSISTENT SESSION TYPE!"
 fi
 
 # Check if the correct slice timing was used
@@ -81,18 +89,24 @@ if [ ${setFmri} -eq ${sliceTiming} ]
 	then
 		echo " "
 	else
-		echo "INCORRECT SLICE TIMING INPUT"
+		echo "     INCORRECT SLICE TIMING INPUT"
 fi
  
-# Check if the correct DOF for main structural registration was correct. Should be BBR.
+# Check if the correct DOF was used for registration to main structural (T1)
+DOF="`grep "set fmri(reghighres_dof)" ${currentFile} | awk '{print $3}'`"
 
-DOF="`grep "set frmi(reghighres_dof)" ${currentFile} | awk '{print $3}'`"
-
-if [ "${DOF}"="BBR" ]
-	then
+if [ ${DOF} -eq ${inputDOF} ]
+	then 
 		echo " "
 	else
-		echo "INCORRECT DEGREES OF FREEDOM"
-fi
+		echo "     INCORRECT DEGREES OF FREEDOM"
+fi 
 
+
+# continuation of if-then statement to check if file exists
+else 
+	echo "###########################"
+	echo "File does not exist for: ${blind} ${task}"
+
+fi # done with if-then statement to check if file exists
 done # done with while-read loop
