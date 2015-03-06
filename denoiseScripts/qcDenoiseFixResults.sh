@@ -26,12 +26,13 @@ sed 1d $varyingRegistrationInputs | while IFS="," read blind task dof; do
 
 
 	echo ""
+	echo ""
 	echo "Begin inspection of denoise results for MA0${blind}, ${task} "
 	echo -n "Enter to continue. (or CTRL-C to quit)"
 	read
 	
 	# Visually inspect and compare pre-FIXed and post-FIXed EPIs
-	echo "Opening (1) cleaned and (2) uncleaned nifti file"
+	echo "Opening (1) FIX-denoised and (2) original Melodic output nifti file"
 	fslview ${parentDir}/${task}/MA0${blind}_preprocessMELODIC.ica/filtered_func_data_clean.nii.gz &
 	fslview ${parentDir}/${task}/MA0${blind}_preprocessMELODIC.ica/filtered_fucc_data.nii.gz &
 
@@ -78,8 +79,12 @@ sed 1d $varyingRegistrationInputs | while IFS="," read blind task dof; do
 	echo -n "Enter to continue. (or CTRL-C to quit)"
 	read
 
-	echo "Opening (1) denoised QC-report and (2) original QC-report."
+	echo "Opening (1) FIX-denoised QC-report and (2) original QC-report."
 	firefox ${qcReportOutDir}/index.html &
 	firefox /data/birc/Atlanta/tranThesis/03.derivedData/qualityControl/MA0${blind}/${session}/${task}/qcReport-FBIRN/index.html &
+
+
+	echo "Completed."
+	echo "######################################################"
 
 done # done with while-read loop.
