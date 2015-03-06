@@ -5,7 +5,7 @@
 
 # This text file DOES NOT INCLUDE language MA025, motor MA038, and rest MA049 due to exceptionally poor registration, which will be resolved an copied later. 
 # Text file that contains a list of all participants and the functional-to-standard registration parameters that were deemed acceptable.
-varyingRegistrationInputs="/data/birc/Atlanta/tranThesis/gitRepos/thesis/denoiseScripts/varyingRegistrationInputs.csv"
+varyingRegistrationInputs="/data/birc/Atlanta/tranThesis/gitRepos/thesis/denoiseScripts/testvaryingRegistrationInputs.csv"
 
 parentDir="/data/birc/Atlanta/tranThesis/03.derivedData/denoiseFIX"
 
@@ -29,17 +29,16 @@ sed 1d $varyingRegistrationInputs | while IFS="," read blind task dof; do
 	echo ""
 	echo "Begin inspection of denoise results for MA${blind}, ${task} "
 	echo -n "Enter to continue. (or CTRL-C to quit)"
-	read
-	
+	read 
+
 	# Visually inspect and compare pre-FIXed and post-FIXed EPIs
 	echo ""
 	echo "Opening (1) FIX-denoised and (2) original Melodic output nifti file"
 	fslview ${parentDir}/${task}/MA${blind}_preprocessMELODIC.ica/filtered_func_data_clean.nii.gz &
 	fslview ${parentDir}/${task}/MA${blind}_preprocessMELODIC.ica/filtered_func_data.nii.gz &
-
+	
 	echo ""
 	echo "Move on to the next inspection."
-	echo ""
 	echo -n "Enter to continue. (or CTRL-C to quit)"
 	read
 
@@ -50,7 +49,6 @@ sed 1d $varyingRegistrationInputs | while IFS="," read blind task dof; do
 	
 	echo ""
 	echo "Move on to the next inspection."
-	echo ""
 	echo -n "Enter to continue. (or CTRL-C to quit)"
 	read
 
@@ -79,7 +77,6 @@ sed 1d $varyingRegistrationInputs | while IFS="," read blind task dof; do
 	echo ""
 
 	echo "Inspect qc-report for denoised data."
-	echo ""
 	echo -n "Enter to continue. (or CTRL-C to quit)"
 	read
 
