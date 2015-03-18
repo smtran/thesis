@@ -12,7 +12,7 @@ clear
 
 # I'm using $projectDir to hold the location of my git source dir, where this
 # script and supporting files live during development:
-projDir="/data/birc/Atlanta/tranThesis/gitRepos/thesis/"
+projDir="/data/birc/Atlanta/tranThesis/gitRepos/thesis"
 
 
 # $apInputs is a .csv file coding sessionXsequence variations that will affect
@@ -23,8 +23,9 @@ projDir="/data/birc/Atlanta/tranThesis/gitRepos/thesis/"
 #    010,cowat,interleaved
 #    010,motor,interleaved
 #    014,cowat,interleaved
-#
-apInputs="${projDir}/acquisitionCharacteristics/varyingAfniprocInputs.csv"
+
+# the varyingRegistrationInputs is missing sessions: MA025 language and MA038 motor.
+apInputs="${projDir}/applyGLM/varyingAfniProcInputs.csv"
 echo ""
 echo "\$apInputs==$apInputs"
 ls -al $apInputs
@@ -35,7 +36,7 @@ echo ""
 # batch (i.e., ~300 line proc scripts for the participants and their afni_proc
 # results directories)
 startDateTime="`date +%Y%m%d%H%M%S`"
-tempDirBatch="/data/birc/Atlanta/tranThesis/03.derivedData/afniProcScriptOutput/batch-tranThesis-giantMove-${startDateTime}"
+tempDirBatch="/data/birc/Atlanta/tranThesis/03.derivedData/applyGLM/batch-${startDateTime}"
 rm -fr ${tempDirBatch}
 mkdir -p ${tempDirBatch}
 cd ${tempDirBatch}
@@ -47,7 +48,7 @@ echo ""
 
 
 # The parent directory containing the acquired timeseries:
-acqParentDir="/data/birc/Atlanta/tranThesis/02.collectedData-TREAT_AS_SENSITIVE/mrSourceNiftisScreened/"
+acqParentDir="/data/birc/Atlanta/tranThesis/03.derivedData"
 echo ""
 echo "\$acqParentDir==$acqParentDir"
 ls -ald $acqParentDir
@@ -72,29 +73,27 @@ cat $apInputs
 echo ""
 
 # begin while-read loop:
-sed 1d $apInputs | while IFS="," read blind task session sliceOrder; do
+sed 1d $apInputs | while IFS="," read blind task dof; do
    echo "====================================================="
    echo "\$blind==${blind}"
    echo "\$task==${task}"
-   echo "\$session==${session}"
-   echo "\$sliceOrder==${sliceOrder}"
    echo "====================================================="
 
 
    ################################################################################
    # The anatomic T1 (not skull-stripped) to be used as an afni_proc input:
    ################################################################################
-   anatWithSkull="${acqParentDir}/MA${blind}/sessA/T1/MA${blind}_MNI.nii.gz"
+   anatWithoutSkull="${acqParentDir}/brainExtractT1/acceptableSkullStrippedT1s/betMA${blind}_t1_brain.nii.gz"
    echo ""
-   echo "\$anatWithSkull==$anatWithSkull"
-   ls -al $anatWithSkull
+   echo "\$anatWithoutSkull==$anatWithoutSkull"
+   ls -al $anatWithoutSkull
    echo ""
 
 
    ################################################################################
    # name of epi acqfile depends on whether task is "cowat" or "motor":
    ################################################################################
-   epi="${acqParentDir}/MA${blind}/sess${session}/${task}/epi01_MNI.nii.gz"
+   epi="${acqParentDir}/denoiseFIX/${task}/MA${blind}_preprocessMELODIC.ica/filtered_func_data_clean.nii.gz"
    echo ""
    echo "\$epi==$epi"
    ls -al $epi
@@ -114,30 +113,11 @@ sed 1d $apInputs | while IFS="," read blind task session sliceOrder; do
          stimLabel="left right"
       ;;
    esac
+   
    echo ""
    echo "\$stimLabel==$stimLabel"
    echo "\$stimTimes==$stimTimes"
    ls -al $stimTimes
-   echo ""
-
-
-   ################################################################################
-   # slice timing varies by slice order ($sliceOrder is read in at top of this while-read loop):
-   ################################################################################
-   case "$sliceOrder" in
-      interleaved)
-         sliceTimes="${projDir}/acquisitionCharacteristics/interleaved_slice_timing_TR2000ms_37slices.txt"
-      ;;
-      ascending)
-         sliceTimes="${projDir}/acquisitionCharacteristics/seq_ascending_slice_timing_TR2000ms_37slices.txt"
-      ;;
-      default)
-	 sliceTimes="${projDir}/acquisitionCharacteristics/default_slice_timing_TR2000_sl37.txt"
-      ;;
-   esac
-   echo ""
-   echo "\$sliceTimes==$sliceTimes"
-   ls -al $sliceTimes
    echo ""
 
 
@@ -187,14 +167,12 @@ sed 1d $apInputs | while IFS="," read blind task session sliceOrder; do
       -script proc.${outputName} \
       -out_dir results.${outputName} \
       -dsets ${epi} \
-      -copy_anat ${anatWithSkull} \
-      -blocks tshift align volreg blur mask scale regress \
-      -tshift_interp -Fourier \
-      -tshift_opts_ts -tpattern @${sliceTimes} \
+      -copy_anat ${anatWithoutSkull} \
+      -anat_has_skull no \
+      -blocks align volreg mask scale regress \
       -tcat_remove_first_trs ${disdacqs} \
       -volreg_align_to first \
       -volreg_interp -Fourier \
-      -blur_size 6 \
       -regress_stim_times ${stimTimes} \
       -regress_stim_labels ${stimLabel} \
       -regress_basis ${basisFxn} \
